@@ -172,6 +172,11 @@ You can also use your own custom key names:
       "variable": "{{mostPlayedGameDisplay}}"
     },
     {
+      "name": "backgroundimage",
+      "type": 3,
+      "variable": "{{profileBackgroundImage}}"
+    },
+    {
       "name": "avataricon",
       "type": 3,
       "variable": "{{avatarFull}}"

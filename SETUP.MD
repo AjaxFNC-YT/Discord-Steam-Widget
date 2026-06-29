@@ -246,6 +246,11 @@ Replace the placeholders with your real values:
     {
       "name": "friends",
       "variable": "{{friends}}"
+    },
+    {
+      "name": "backgroundimage",
+      "type": 3,
+      "variable": "{{profileBackgroundImage}}"
     }
   ]
 }

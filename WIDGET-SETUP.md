@@ -146,6 +146,7 @@ const appName = "Steam Widget";
 const widgetName = "Steam Profile";
 
 const starterDynamic = [
+  { type: 3, name: "backgroundimage", value: { url: "https://cdn.discordapp.com/embed/avatars/0.png" } },
   { type: 3, name: "avataricon", value: { url: "https://cdn.discordapp.com/embed/avatars/0.png" } },
   { type: 1, name: "mostplayedgame", value: "Most Played Game" },
   { type: 1, name: "playtime", value: "0h 0m" },
@@ -192,30 +193,78 @@ await api.patch({
       widget_top: {
         layout: "widget_top_hero",
         components: {
-          hero_image: {
-            fields: {
-              image: {
-                presentation_type: "image",
-                value_type: "data",
-                value: "avataricon"
-              }
-            }
-          },
           title: {
             fields: {
               text: {
-                presentation_type: "text",
                 value_type: "data",
-                value: "mostplayedgame"
+                presentation_type: "text",
+                value: "username",
+                fallback: {
+                  value_type: "custom_string",
+                  presentation_type: "text",
+                  value: "N/A"
+                }
               }
             }
           },
           subtitle_1: {
             fields: {
               text: {
-                presentation_type: "text",
                 value_type: "data",
-                value: "playtime"
+                presentation_type: "text",
+                value: "simpleurl",
+                fallback: {
+                  value_type: "custom_string",
+                  presentation_type: "text",
+                  value: "steamcommunity.com/you"
+                }
+              }
+            }
+          },
+          subtitle_2: {
+            fields: {
+              text: {
+                value_type: "data",
+                presentation_type: "text",
+                value: "mostplayedgame",
+                fallback: {
+                  value_type: "custom_string",
+                  presentation_type: "text",
+                  value: "N/A"
+                }
+              },
+              label: {
+                value_type: "custom_string",
+                presentation_type: "text",
+                value: "Most Played"
+              }
+            }
+          },
+          subtitle_3: {
+            fields: {
+              text: {
+                value_type: "data",
+                presentation_type: "text",
+                value: "steamlevel",
+                fallback: {
+                  value_type: "custom_string",
+                  presentation_type: "text",
+                  value: "0"
+                }
+              },
+              label: {
+                value_type: "custom_string",
+                presentation_type: "text",
+                value: "Steam Level"
+              }
+            }
+          },
+          hero_image: {
+            fields: {
+              image: {
+                value_type: "data",
+                presentation_type: "image",
+                value: "backgroundimage"
               }
             }
           }
@@ -226,38 +275,38 @@ await api.patch({
         components: {
           stat_1: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "gamesowned" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Games Owned" }
+              value: { value_type: "data", presentation_type: "text", value: "gamesowned", fallback: { value_type: "custom_string", presentation_type: "text", value: "0" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Games Owned" }
             }
           },
           stat_2: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "friends" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Friends" }
+              value: { value_type: "data", presentation_type: "text", value: "playtime", fallback: { value_type: "custom_string", presentation_type: "text", value: "0h 0m" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Total Playtime" }
             }
           },
           stat_3: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "steamlevel" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Steam Level" }
+              value: { value_type: "data", presentation_type: "text", value: "friends", fallback: { value_type: "custom_string", presentation_type: "text", value: "0" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Friends" }
             }
           },
           stat_4: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "badgecount" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Badges" }
+              value: { value_type: "data", presentation_type: "text", value: "badgecount", fallback: { value_type: "custom_string", presentation_type: "text", value: "0" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Badges" }
             }
           },
           stat_5: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "membersince" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Member Since" }
+              value: { value_type: "data", presentation_type: "text", value: "playtimepast2w", fallback: { value_type: "custom_string", presentation_type: "text", value: "0" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Past 2 Weeks" }
             }
           },
           stat_6: {
             fields: {
-              value: { presentation_type: "text", value_type: "data", value: "playtimepast2w" },
-              label: { presentation_type: "text", value_type: "custom_string", value: "Past 2 Weeks" }
+              value: { value_type: "data", presentation_type: "text", value: "membersince", fallback: { value_type: "custom_string", presentation_type: "text", value: "2026" } },
+              label: { value_type: "custom_string", presentation_type: "text", value: "Member Since" }
             }
           }
         }
@@ -270,25 +319,7 @@ await api.patch({
               image: {
                 presentation_type: "image",
                 value_type: "data",
-                value: "avataricon"
-              }
-            }
-          },
-          title: {
-            fields: {
-              text: {
-                presentation_type: "text",
-                value_type: "custom_string",
-                value: "Steam Profile"
-              }
-            }
-          },
-          subtitle_1: {
-            fields: {
-              text: {
-                presentation_type: "text",
-                value_type: "custom_string",
-                value: "Live Steam stats on Discord"
+                value: "backgroundimage"
               }
             }
           }
@@ -342,6 +373,7 @@ console.log("[Steam Widget Creator] The widget page should now be open so you ca
 
 The simple method creates a base widget using these fields:
 
+- `backgroundimage`
 - `avataricon`
 - `mostplayedgame`
 - `playtime`
@@ -444,6 +476,7 @@ That means the widget must contain a field named `playtime` somewhere in its lay
 
 This repo's default config already expects:
 
+- `backgroundimage`
 - `playtime`
 - `gamesowned`
 - `friends`
@@ -461,35 +494,37 @@ You can rename them if you want, but if you do, update `config.json` to match.
 
 Use a hero-style top section with:
 
-- **Image** -> `avataricon`
-- **Title** -> `mostplayedgame`
-- **Subtitle / Description** -> `playtime`
+- **Image** -> `backgroundimage`
+- **Title** -> `username`
+- **Subtitle 1** -> `simpleurl`
+- **Subtitle 2** -> `mostplayedgame`
+- **Subtitle 3** -> `steamlevel`
 
 That gives you:
 
-- Steam avatar as the main image
-- most played game as the main title
-- total playtime as the supporting line
+- Steam profile background as the main image
+- your widget username as the main title
+- profile URL, most played game, and Steam level in the supporting rows
 
 ### Recommended bottom stats grid
 
 Use six stat cells:
 
 1. `gamesowned`
-2. `friends`
-3. `steamlevel`
+2. `playtime`
+3. `friends`
 4. `badgecount`
-5. `membersince`
-6. `playtimepast2w`
+5. `playtimepast2w`
+6. `membersince`
 
 Good labels for those:
 
 - `Games Owned`
+- `Total Playtime`
 - `Friends`
-- `Steam Level`
 - `Badges`
-- `Member Since`
 - `Past 2 Weeks`
+- `Member Since`
 
 ### Optional extra text field
 
@@ -509,13 +544,11 @@ This part is just presentation.
 
 It does not need live Steam data.
 
-For a simple Steam preview:
+For the hero preview layout, keep it simple.
 
-- use a static title like `Steam Profile`
-- use a static subtitle like `Live Steam stats on Discord`
-- use a static image or app asset
+The helper script only uses the preview image component there, because Discord rejects extra text components on that specific preview surface layout.
 
-Keep it simple.
+If you are building it manually, start with just the preview image first, publish it, then only add extra preview fields if your current widget layout clearly supports them.
 
 ---
 
@@ -566,6 +599,7 @@ These are the default field names this repo already supports out of the box:
 
 | Widget field name | What it shows |
 | --- | --- |
+| `backgroundimage` | Steam profile background image URL |
 | `playtime` | Total playtime |
 | `gamesowned` | Number of owned games |
 | `friends` | Number of Steam friends |
@@ -585,18 +619,20 @@ If you want the easiest clean-looking base widget:
 
 ### Top
 
-- image -> `avataricon`
-- title -> `mostplayedgame`
-- subtitle -> `playtime`
+- image -> `backgroundimage`
+- title -> `username`
+- subtitle 1 -> `simpleurl`
+- subtitle 2 -> `mostplayedgame`
+- subtitle 3 -> `steamlevel`
 
 ### Bottom
 
 - stat 1 -> `gamesowned`
-- stat 2 -> `friends`
-- stat 3 -> `steamlevel`
+- stat 2 -> `playtime`
+- stat 3 -> `friends`
 - stat 4 -> `badgecount`
-- stat 5 -> `membersince`
-- stat 6 -> `playtimepast2w`
+- stat 5 -> `playtimepast2w`
+- stat 6 -> `membersince`
 
 ---
 

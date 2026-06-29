@@ -45,6 +45,11 @@
       "variable": "{{simpleUrl}}"
     },
     {
+      "name": "backgroundimage",
+      "type": 3,
+      "variable": "{{profileBackgroundImage}}"
+    },
+    {
       "name": "avataricon",
       "type": 3,
       "variable": "{{avatarFull}}",

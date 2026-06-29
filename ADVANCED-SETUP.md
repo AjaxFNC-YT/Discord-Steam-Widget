@@ -62,6 +62,16 @@ Example image field:
 }
 ```
 
+Another image field:
+
+```json
+{
+  "name": "backgroundimage",
+  "type": 3,
+  "variable": "{{profileBackgroundImage}}"
+}
+```
+
 ## Username formatting
 
 The widget username uses:
