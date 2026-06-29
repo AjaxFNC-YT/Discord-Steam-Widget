@@ -1,16 +1,40 @@
 # Steam Discord Widget
 
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Steam Web API](https://img.shields.io/badge/Steam-Web%20API-171A21?logo=steam&logoColor=white)](https://developer.valvesoftware.com/wiki/Steam_Web_API)
-[![Discord Widget](https://img.shields.io/badge/Discord-Widget-5865F2?logo=discord&logoColor=white)](https://discord.com/developers/applications)
+<p align="center">
+  <a href="https://nodejs.org/">
+    <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node.js 18+" />
+  </a>
+  <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API">
+    <img src="https://img.shields.io/badge/Steam-Web%20API-171A21?logo=steam&logoColor=white" alt="Steam Web API" />
+  </a>
+  <a href="https://discord.com/developers/applications">
+    <img src="https://img.shields.io/badge/Discord-Widget-5865F2?logo=discord&logoColor=white" alt="Discord Widget" />
+  </a>
+</p>
 
-A configurable Node.js script that updates a Discord widget profile with Steam account data.
+<p align="center">
+  A configurable Node.js script that updates a Discord widget profile with Steam account data.
+</p>
 
-This repo is made for people who want a Steam widget that looks good, is easy to set up, and is still customizable if they want to go deeper later.
+<p align="center">
+  <a href="./SIMPLE-SETUP.md"><strong>Simple Setup</strong></a>
+  ·
+  <a href="./SETUP.MD"><strong>Full Setup</strong></a>
+  ·
+  <a href="./WIDGET-SETUP.md"><strong>Widget Setup</strong></a>
+  ·
+  <a href="./ADVANCED-SETUP.md"><strong>Advanced Setup</strong></a>
+  ·
+  <a href="./TROUBLESHOOTING.md"><strong>Troubleshooting</strong></a>
+</p>
+
+---
 
 ## What it does
 
-This project can push Steam data like:
+This project pulls Steam profile data and patches it into a Discord widget profile.
+
+It can expose things like:
 
 - total playtime
 - playtime in the past 2 weeks
@@ -24,26 +48,17 @@ This project can push Steam data like:
 - avatar URLs
 - profile background image / video URLs
 
-You can use those as:
+You can use those values as:
 
 - text fields
 - number-style fields
 - image fields
 
-## Table of Contents
-
-- [Quick Start](#quick-start)
-- [Documentation](#documentation)
-- [How It Works](#how-it-works)
-- [Who This Is For](#who-this-is-for)
-- [Features](#features)
-- [Project Files](#project-files)
-- [Security](#security)
-- [Useful Links](#useful-links)
+---
 
 ## Quick Start
 
-If you just want the easiest path:
+If you want the fastest path:
 
 1. Open [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
 2. Fill out [`config.json`](./config.json)
@@ -53,40 +68,46 @@ If you just want the easiest path:
 npm start
 ```
 
+If you want the full walkthrough instead, go to [SETUP.MD](./SETUP.MD).
+
+---
+
 ## Documentation
 
-This repo uses multiple guides on purpose, so beginners do not get slammed by a giant wall of documentation.
+This repo is split into multiple guides so beginners are not forced through advanced config docs just to get a widget working.
 
 ### Start here
 
 - [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)  
   Fastest setup path for most people.
 
-### Full setup guide
+### Full step-by-step guide
 
 - [SETUP.MD](./SETUP.MD)  
-  Step-by-step setup, from Steam key to Discord widget patching.
+  Full walkthrough from Steam key to running updater.
 
-### Discord widget-side guide
+### Discord-side widget guide
 
 - [WIDGET-SETUP.md](./WIDGET-SETUP.md)  
-  Covers creating widget keys, publishing, authing the widget, and using image fields.
+  Covers widget keys, publishing, authing the widget, and image usage.
 
 ### Advanced config guide
 
 - [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)  
-  Covers variables, formatting, image links, number-style values, and custom field mappings.
+  Covers variables, formatting, image links, number-style values, and custom mappings.
 
 ### Troubleshooting guide
 
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)  
-  Common errors, why they happen, and how to fix them.
+  Common issues, likely causes, and fixes.
 
-## How It Works
+---
 
-The system has two sides:
+## How it works
 
-### 1. Discord side
+There are two sides to the system:
+
+### Discord side
 
 You create widget keys in your Discord widget profile.
 
@@ -100,7 +121,7 @@ Examples:
 - `avataricon`
 - `backgroundimage`
 
-### 2. Script side
+### Script side
 
 In [`config.json`](./config.json), you map those keys to Steam variables.
 
@@ -129,7 +150,9 @@ You can also use your own custom key names:
 }
 ```
 
-## Who This Is For
+---
+
+## Who this is for
 
 ### If you do not code much
 
@@ -138,7 +161,7 @@ Use:
 - [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
 - [SETUP.MD](./SETUP.MD)
 
-### If you want more control
+### If you want full control
 
 Use:
 
@@ -146,10 +169,12 @@ Use:
 - [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
+---
+
 ## Features
 
 - Config-driven field mapping
-- Supports text and image fields
+- Supports text fields and image fields
 - Supports custom widget key names
 - Supports one-time mode and polling mode
 - Supports formatted variable strings
@@ -158,16 +183,20 @@ Use:
 - Supports profile background image / video URLs
 - Backward-compatible with older `template` configs
 
+---
+
 ## Project Files
 
 - [`index.mjs`](./index.mjs) - main updater
 - [`config.json`](./config.json) - simple public-safe config template
-- [`README.md`](./README.md) - project landing page
-- [`SIMPLE-SETUP.md`](./SIMPLE-SETUP.md) - easiest path
-- [`SETUP.MD`](./SETUP.MD) - full step-by-step setup
+- [`README.md`](./README.md) - landing page
+- [`SIMPLE-SETUP.md`](./SIMPLE-SETUP.md) - easiest setup path
+- [`SETUP.MD`](./SETUP.MD) - full setup walkthrough
 - [`WIDGET-SETUP.md`](./WIDGET-SETUP.md) - Discord widget-side guide
-- [`ADVANCED-SETUP.md`](./ADVANCED-SETUP.md) - advanced config + variables
+- [`ADVANCED-SETUP.md`](./ADVANCED-SETUP.md) - advanced config and variable reference
 - [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - common problems and fixes
+
+---
 
 ## Security
 
@@ -182,6 +211,8 @@ Do not commit:
 - real `widgetBotToken`
 - real `steamApiKey`
 - real personal private config values
+
+---
 
 ## Useful Links
 
