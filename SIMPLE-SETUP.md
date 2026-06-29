@@ -23,8 +23,8 @@ You need five things:
 1. [Node.js 18+](https://nodejs.org/)
 2. A [Steam Web API key](https://steamcommunity.com/dev/apikey)
 3. Your Steam `steamId64`
-4. Your Discord `applicationId`
-5. Your Discord `userId` and `widgetBotToken`
+4. The Discord widget setup helper
+5. Your Steam profile info
 
 ## Step 1 - Install Node.js
 
@@ -73,13 +73,7 @@ Do this:
 
 ## Step 4 - Get your Discord widget values
 
-You need:
-
-- `applicationId`
-- `userId`
-- `widgetBotToken`
-
-If you do not already have those, read:
+If you do not already have the Discord side set up, read:
 
 - [WIDGET-SETUP.md](./WIDGET-SETUP.md)
 
@@ -94,7 +88,8 @@ That guide covers the Discord side:
 Recommended:
 
 - use the helper script in `WIDGET-SETUP.md`
-- then come back here and finish `config.json`
+- let it copy the ready `config.json` starter
+- then come back here and add your Steam values
 
 ## Step 5 - Fill out `config.json`
 
@@ -106,13 +101,12 @@ Replace the placeholder values:
 
 ```json
 {
-  "applicationId": "YOUR_APPLICATION_ID",
-  "userId": "YOUR_USER_ID",
-  "widgetBotToken": "YOUR_WIDGET_BOT_TOKEN",
   "steamApiKey": "YOUR_STEAM_API_KEY",
   "steamId64": "YOUR_STEAM_ID64"
 }
 ```
+
+If you used the recommended helper script, `applicationId`, `userId`, and `widgetBotToken` should already be filled in for you.
 
 You can leave the rest of the config alone if you want the default starter layout.
 

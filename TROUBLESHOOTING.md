@@ -1,6 +1,6 @@
 # Troubleshooting
 
-This guide lists the most common problems people hit while setting up the Steam Discord Widget.
+This guide covers the most common problems people hit while setting up the Steam Discord Widget.
 
 ## Table of Contents
 
@@ -27,8 +27,8 @@ Also make sure:
 
 - the widget has been created
 - the widget has been published
-- your account has actually authed / linked the widget flow
-- the widget/profile identity is attached to the profile you expect
+- your account has actually authed the widget flow
+- the widget was added to the correct Discord profile
 
 Read:
 
@@ -84,7 +84,7 @@ Example:
 
 ## Steam values look wrong
 
-Usually this comes from using the wrong variable for the kind of display you want.
+Usually this means you picked the wrong variable for the display style you want.
 
 Examples:
 
@@ -104,7 +104,7 @@ Make sure:
 
 - the widget was created on the Discord side
 - the widget was published
-- your account has the widget attached / authed correctly
+- your account has the widget attached and authed correctly
 - the updater is targeting the correct application and user IDs
 
 This is usually a Discord-side setup problem, not a Steam API problem.
@@ -117,20 +117,21 @@ Most often, this means:
 
 - the widget exists but the updater has not pushed real Steam data yet
 - the app or widget was set up on the wrong application
-- the widget auth / profile attachment flow was not completed correctly
+- the widget auth or profile attachment flow was not completed correctly
 
 Fix:
 
 1. make sure the widget was created and published correctly
 2. make sure the app is authed to your account
-3. fill out [`config.json`](./config.json)
-4. run the updater:
+3. paste the copied starter into [`config.json`](./config.json)
+4. add your Steam values
+5. run the updater:
 
 ```bash
 npm start
 ```
 
-The updater is what finishes the widget setup by pushing your real Steam data into the widget profile identity.
+The updater is what finishes widget setup by pushing your real Steam data into the widget profile identity.
 
 If it still happens after that, re-check:
 
@@ -138,6 +139,7 @@ If it still happens after that, re-check:
 - `userId`
 - `widgetBotToken`
 - that the widget was created on the same app you put in `config.json`
+- that you copied the newest config if you recreated the widget app or reset the bot token
 
 ## Common error causes
 
@@ -150,8 +152,7 @@ Symptoms:
 
 Fix:
 
-- generate a valid key again from:
-  - <https://steamcommunity.com/dev/apikey>
+- generate a valid key again from <https://steamcommunity.com/dev/apikey>
 
 ### Wrong Steam ID64
 
@@ -164,7 +165,7 @@ Fix:
 
 - use the full numeric Steam profile ID
 
-### Wrong widget token / wrong app values
+### Wrong widget token or wrong app values
 
 Symptoms:
 
@@ -187,4 +188,3 @@ Fix:
 
 - use text fields normally
 - use `"type": 3` for image fields only
-<!-- minor refresh -->

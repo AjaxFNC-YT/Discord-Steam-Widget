@@ -70,7 +70,7 @@ Use this if you:
 
 - already made the widget
 - already published it
-- already have your `applicationId`, `userId`, and `widgetBotToken`
+- already have your Discord-side values ready, either from the helper script or from your current widget
 - just want to fill in the Steam config and run the script
 
 Jump to [Path B - I already have a widget](#path-b---i-already-have-a-widget).
@@ -149,7 +149,8 @@ If you do not have the widget side finished yet, do this now.
 1. Open [WIDGET-SETUP.md](./WIDGET-SETUP.md)
 2. Use the recommended helper script method there
 3. Let it create and publish the base widget for you
-4. Come back here and continue with `config.json`
+4. Let it copy the starter `config.json`
+5. Come back here and continue with your Steam values
 
 If you want to build everything manually instead, the same guide also includes the full manual path.
 
@@ -254,6 +255,12 @@ Replace the placeholders with your real values:
   ]
 }
 ```
+
+If you used the recommended helper script, these Discord-side values may already be filled in for you:
+
+- `applicationId`
+- `userId`
+- `widgetBotToken`
 
 If you want the default widget layout, you can usually leave the included field mappings alone.
 

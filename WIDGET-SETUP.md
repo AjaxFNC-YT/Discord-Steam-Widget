@@ -73,6 +73,9 @@ It uses the helper script below to:
 - create a base widget
 - publish it
 - auth the widget flow
+- add the widget to your profile
+- reset the bot token
+- copy a ready `config.json` starter with the Discord values already filled in
 - open the widget page for final checking
 
 ### Method 2 - Manual widget setup
@@ -109,19 +112,25 @@ The script will:
 5. build a simple base layout using this repo's field names
 6. publish the widget
 7. auth the widget flow
-8. open the widget page so you can tweak it
+8. add the widget to your profile
+9. reset the widget bot token
+10. copy a ready `config.json` starter to your clipboard
+11. open the widget page so you can tweak it
 
 ### After the script finishes
 
-Copy these values into [`config.json`](./config.json):
+The helper script copies a starter [`config.json`](./config.json) to your clipboard.
+
+That copied config already includes:
 
 - `applicationId`
+- `userId`
 - `widgetBotToken`
 
-You can get:
+You only need to replace:
 
-- `applicationId` from the newly created app
-- `widgetBotToken` from the app's **Bot** page
+- `steamApiKey`
+- `steamId64`
 
 Then run the updater from this repo:
 
@@ -141,13 +150,16 @@ let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
 webpackChunkdiscord_developers.pop();
 
 let ApexStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.createOverride).exports.A;
+let UserStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.getCurrentUser).exports.A;
 let FluxDispatcher = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.flushWaitQueue).exports.A;
 let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
+let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
 
 const appName = "Steam Profile";
 const widgetName = "Steam Profile";
+const userId = UserStore.getCurrentUser().id;
 
 console.log("[Steam Widget Creator] Creating a new app... Please solve the captcha if prompted.");
 const appRes = await api.post({ url: "/applications", body: { name: appName, team_id: null } });
@@ -333,11 +345,49 @@ console.log("[Steam Widget Creator] Adding redirect URI and authing the widget..
 await api.patch({ url: `/applications/${appId}`, body: { name: appName, redirect_uris: ["https://discord.com"] } });
 await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
 
+console.log("[Steam Widget Creator] Adding the widget to your profile...");
+const profileRes = await api.get({ url: `/users/${userId}/profile` });
+const existingWidgets = Array.isArray(profileRes.body.widgets) ? profileRes.body.widgets : [];
+existingWidgets.unshift({ data: { type: "application", application_id: appId } });
+await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+
+console.log("[Steam Widget Creator] Getting the bot token... Please solve 2FA if Discord asks.");
+const botTokenRes = await api.post({ url: `/applications/${appId}/bot/reset` });
+const botToken = botTokenRes.body.token;
+
+const starterConfig = {
+  applicationId: appId,
+  userId,
+  widgetBotToken: botToken,
+  steamApiKey: "YOUR_STEAM_API_KEY",
+  steamId64: "YOUR_STEAM_ID64",
+  pollingEnabled: true,
+  pollIntervalMs: 300000,
+  usernameTemplate: "{{displayName}}",
+  dynamicFields: [
+    { name: "playtime", variable: "{{playtimeHoursMinutes}}" },
+    { name: "gamesowned", variable: "{{gamesOwned}}" },
+    { name: "friends", variable: "{{friends}}" },
+    { name: "steamlevel", variable: "{{steamLevel}}" },
+    { name: "membersince", variable: "{{memberSinceYear}}" },
+    { name: "badgecount", variable: "{{badgeCount}}" },
+    { name: "playtimepast2w", variable: "{{playtimePast2WHoursMinutes}}" },
+    { name: "mostplayedgame", variable: "{{mostPlayedGameDisplay}}" },
+    { name: "simpleurl", variable: "{{simpleUrl}}" },
+    { name: "backgroundimage", type: 3, variable: "{{profileBackgroundImage}}" },
+    { name: "avataricon", type: 3, variable: "{{avatarFull}}", enabled: false }
+  ]
+};
+
+await globalCopy(JSON.stringify(starterConfig, null, 2));
+
 const widgetEditorUrl = `https://discord.com/developers/applications/${appId}/widget`;
 
 console.log("[Steam Widget Creator] Widget created and published.");
-console.log("[Steam Widget Creator] Next: copy the application ID into config.json, get the bot token from the Bot page, then run the Node updater to push your real Steam data.");
+console.log("[Steam Widget Creator] A starter config.json was copied to your clipboard.");
+console.log("[Steam Widget Creator] Replace YOUR_STEAM_API_KEY and YOUR_STEAM_ID64, then run npm start.");
 console.log(`[Steam Widget Creator] App ID: ${appId}`);
+console.log(`[Steam Widget Creator] User ID: ${userId}`);
 console.log(`[Steam Widget Creator] Opening widget editor: ${widgetEditorUrl}`);
 
 ApexStore.createOverride("2026-03-widget-config-editor", 1);
@@ -365,7 +415,7 @@ The simple method creates a base widget using these fields:
 - `playtimepast2w`
 - `simpleurl`
 
-That matches the default config in [`config.json`](./config.json).
+That matches the default config in [`config.json`](./config.json), and the helper script now copies that starter config for you with the Discord-side values already filled in.
 
 ---
 

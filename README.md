@@ -60,7 +60,7 @@ If you want the shortest path:
 
 1. Follow [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
 2. Use the recommended Discord widget helper in [WIDGET-SETUP.md](./WIDGET-SETUP.md)
-3. Fill out [`config.json`](./config.json)
+3. Paste the copied starter into [`config.json`](./config.json) and add your Steam values
 4. Run:
 
 ```bash
@@ -155,9 +155,9 @@ You can also use your own custom key names:
 
 ```json
 {
-  "applicationId": "YOUR_APPLICATION_ID",
-  "userId": "YOUR_USER_ID",
-  "widgetBotToken": "YOUR_WIDGET_BOT_TOKEN",
+  "applicationId": "AUTO_FILLED_BY_WIDGET_SETUP",
+  "userId": "AUTO_FILLED_BY_WIDGET_SETUP",
+  "widgetBotToken": "AUTO_FILLED_BY_WIDGET_SETUP",
   "steamApiKey": "YOUR_STEAM_API_KEY",
   "steamId64": "YOUR_STEAM_ID64",
   "pollingEnabled": true,
