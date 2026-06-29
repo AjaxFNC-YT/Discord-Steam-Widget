@@ -74,7 +74,7 @@ It uses the helper script below to:
 - create a base widget
 - publish it
 - auth the widget flow
-- add the widget to your profile
+- try to add the widget to your profile
 - reset the bot token
 - copy a ready `config.json` starter with the Discord values already filled in
 - open the widget page for final checking
@@ -185,12 +185,6 @@ let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
 let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
-const clearWidgetsSnippet = [
-  "let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);",
-  "webpackChunkdiscord_app.pop();",
-  "let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;",
-  "api.put({url: `/users/@me/widgets`, body: {widgets: []}})"
-].join("\\n");
 
 const appName = "Steam Profile";
 const widgetName = "Steam Profile";
@@ -388,14 +382,7 @@ try {
   await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
   widgetAddedToProfile = true;
 } catch (error) {
-  console.warn("[Steam Widget Creator] Discord rejected the automatic profile add step.");
-  console.warn("[Steam Widget Creator] Your widget was still created. You may need to add it to your profile manually in Discord.");
-  console.warn("[Steam Widget Creator] Common causes:");
-  console.warn("[Steam Widget Creator] 1. Your profile board still references a deleted widget app.");
-  console.warn("[Steam Widget Creator] 2. You are not the owner of the widget application.");
-  console.warn("[Steam Widget Creator] 3. Your account is not in Discord's widgets experiment.");
-  console.warn("[Steam Widget Creator] If you deleted an older widget app, run this cleanup snippet in the normal Discord client console, not the Developer Portal:");
-  console.warn(clearWidgetsSnippet);
+  console.warn("[Steam Widget Creator] Failed to add the widget to your profile automatically. You may need to add it manually.");
   console.warn(error);
 }
 

@@ -28,7 +28,7 @@ Also make sure:
 
 - the widget has been created
 - the widget has been published
-- your account has actually authed the widget flow
+- your account has authed the widget flow
 - the widget was added to the correct Discord profile
 
 Read:
@@ -70,7 +70,7 @@ If `name` does not match the widget key on the Discord side, the field will not 
 Make sure:
 
 - the field uses `"type": 3`
-- the variable resolves to an actual image URL
+- the variable resolves to a real image URL
 - the widget key is meant to be an image field
 
 Example:
@@ -126,14 +126,29 @@ It usually means:
 - the app was created successfully
 - the widget was created successfully
 - the publish/auth steps worked
-- Discord rejected the automatic profile widget write for your current session
+- Discord rejected the automatic profile widget write
 
 What to do:
 
 1. keep the generated app and widget
 2. use the copied `config.json` starter
 3. run `npm start`
-4. add the widget to your profile manually in Discord if it did not appear automatically
+4. add the widget to your profile manually if it did not appear automatically
+
+Common causes:
+
+1. your profile board still references a widget from an app you deleted
+2. you do not own the application you are trying to save to your profile
+3. your account is not in Discord's widget rollout or experiment
+
+If you deleted an older widget app, clear the profile board first in the normal Discord client console:
+
+```js
+let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);
+webpackChunkdiscord_app.pop();
+let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
+api.put({ url: `/users/@me/widgets`, body: { widgets: [] } });
+```
 
 Manual fallback snippet for the Developer Portal console:
 
@@ -153,23 +168,6 @@ const profileRes = await api.get({ url: `/users/${userId}/profile` });
 const existingWidgets = profileRes.body.widgets || [];
 existingWidgets.unshift({ data: { type: "application", application_id: appId } });
 await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
-```
-
-The helper script now continues even if this specific auto-add step fails.
-
-Common causes:
-
-1. your profile board still references a widget from an app you deleted
-2. you do not own the application you are trying to save to your profile
-3. your account is not in Discord's widget rollout / experiment
-
-If you deleted an older widget app, clear the profile board first in the normal Discord client console:
-
-```js
-let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);
-webpackChunkdiscord_app.pop();
-let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
-api.put({url: `/users/@me/widgets`, body: {widgets: []}})
 ```
 
 If you need Discord to surface the widget app in the normal client first, run this in the `discord.com/app` console or desktop client console:
@@ -196,9 +194,14 @@ let findByProps = (...props) => {
 findByProps("getFeaturedApplicationIds").getFeaturedApplicationIds().push(APP_ID);
 ```
 
+More community fixes:
+
+- [Discord Developers Server](https://discord.gg/discord-603970300668805120)
+- [Widget Fixes Channel](https://discord.com/channels/603970300668805120/1520802815310823544)
+
 ## This Application Is Still Syncing
 
-If the widget shows `This Application Is Still Syncing`, the setup usually is not fully finished yet.
+If the widget shows `This Application Is Still Syncing`, the setup is not fully finished yet.
 
 Most often, this means:
 
