@@ -178,13 +178,26 @@ Replace `PASTE_YOUR_APPLICATION_ID_HERE` with your real application ID first.
 let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
 webpackChunkdiscord_developers.pop();
 
-let ApexStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.createOverride).exports.A;
 let UserStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.getCurrentUser).exports.A;
 let FluxDispatcher = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.flushWaitQueue).exports.A;
 let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
 let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
+let _mods = wpRequire.c;
+let findByProps = (...props) => {
+  for (let mod of Object.values(_mods)) {
+    try {
+      if (!mod.exports || mod.exports === window) continue;
+      if (props.every(prop => mod.exports?.[prop])) return mod.exports;
+      for (let key in mod.exports) {
+        if (props.every(prop => mod.exports?.[key]?.[prop]) && mod.exports[key][Symbol.toStringTag] !== "IntlMessagesProxy") {
+          return mod.exports[key];
+        }
+      }
+    } catch {}
+  }
+};
 
 const appName = "Steam Profile";
 const widgetName = "Steam Profile";
@@ -416,8 +429,6 @@ const starterConfig = {
 
 await globalCopy(JSON.stringify(starterConfig, null, 2));
 
-const widgetEditorUrl = `https://discord.com/developers/applications/${appId}/widget`;
-
 console.log("[Steam Widget Creator] Widget created and published.");
 console.log("[Steam Widget Creator] A starter config.json was copied to your clipboard.");
 console.log("[Steam Widget Creator] Replace YOUR_STEAM_API_KEY and YOUR_STEAM_ID64, then run npm start.");
@@ -426,11 +437,13 @@ if (!widgetAddedToProfile) {
 }
 console.log(`[Steam Widget Creator] App ID: ${appId}`);
 console.log(`[Steam Widget Creator] User ID: ${userId}`);
-console.log(`[Steam Widget Creator] Opening widget editor: ${widgetEditorUrl}`);
+console.log("[Steam Widget Creator] Opening widget editor...");
 
-ApexStore.createOverride("2026-03-widget-config-editor", 1);
+findByProps("getAll").getAll().find(entry => entry.getName() === "ApexExperimentStore").createOverride("2026-03-widget-config-editor", 1);
+document.querySelector(`a[href="/developers/applications/${appId}"]`)?.click();
 await sleep(300);
-window.location.href = widgetEditorUrl;
+history.pushState({}, "", `/developers/applications/${appId}/widget`);
+window.dispatchEvent(new PopStateEvent("popstate"));
 ```
 
 </details>
