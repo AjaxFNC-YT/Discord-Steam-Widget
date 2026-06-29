@@ -672,6 +672,35 @@ Depending on Discord's current flow, this is often done through:
 
 If the helper script logs a `401 Unauthorized` when trying to add the widget automatically, that usually means Discord accepted the app and widget actions but rejected the profile widget write for your current session. In that case, just add the widget manually and continue.
 
+### Open the app in Discord manually
+
+If you want Discord to surface the widget app in the client first, you can run this in the normal `discord.com/app` console or the Discord desktop client console:
+
+```js
+const APP_ID = "PASTE_YOUR_APPLICATION_ID_HERE";
+
+let _mods = webpackChunkdiscord_app.push([[Symbol()], {}, e => e.c]);
+webpackChunkdiscord_app.pop();
+let findByProps = (...props) => {
+  for (let mod of Object.values(_mods)) {
+    try {
+      if (!mod.exports || mod.exports === window) continue;
+      if (props.every(prop => mod.exports?.[prop])) return mod.exports;
+      for (let key in mod.exports) {
+        if (props.every(prop => mod.exports?.[key]?.[prop]) && "IntlMessagesProxy" !== mod.exports[key][Symbol.toStringTag]) {
+          return mod.exports[key];
+        }
+      }
+    } catch {}
+  }
+};
+
+findByProps("getFeaturedApplicationIds").getFeaturedApplicationIds().push(APP_ID);
+console.log("[Steam Widget Creator] Added app ID to the Discord app list:", APP_ID);
+```
+
+Replace `PASTE_YOUR_APPLICATION_ID_HERE` first, then reload Discord if needed.
+
 After that, run the Node updater from this repo so the widget actually receives your Steam data.
 
 ---

@@ -172,6 +172,30 @@ let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
 api.put({url: `/users/@me/widgets`, body: {widgets: []}})
 ```
 
+If you need Discord to surface the widget app in the normal client first, run this in the `discord.com/app` console or desktop client console:
+
+```js
+const APP_ID = "PASTE_YOUR_APPLICATION_ID_HERE";
+
+let _mods = webpackChunkdiscord_app.push([[Symbol()], {}, e => e.c]);
+webpackChunkdiscord_app.pop();
+let findByProps = (...props) => {
+  for (let mod of Object.values(_mods)) {
+    try {
+      if (!mod.exports || mod.exports === window) continue;
+      if (props.every(prop => mod.exports?.[prop])) return mod.exports;
+      for (let key in mod.exports) {
+        if (props.every(prop => mod.exports?.[key]?.[prop]) && "IntlMessagesProxy" !== mod.exports[key][Symbol.toStringTag]) {
+          return mod.exports[key];
+        }
+      }
+    } catch {}
+  }
+};
+
+findByProps("getFeaturedApplicationIds").getFeaturedApplicationIds().push(APP_ID);
+```
+
 ## This Application Is Still Syncing
 
 If the widget shows `This Application Is Still Syncing`, the setup usually is not fully finished yet.
