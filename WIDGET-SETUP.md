@@ -19,6 +19,7 @@
 - [What this guide is for](#what-this-guide-is-for)
 - [Choose a method](#choose-a-method)
 - [Method 1 - Simple script setup](#method-1---simple-script-setup)
+- [Manual profile add fallback](#manual-profile-add-fallback)
 - [What the simple script creates](#what-the-simple-script-creates)
 - [Method 2 - Manual widget setup](#method-2---manual-widget-setup)
 - [Part 1 - Create the Discord application](#part-1---create-the-discord-application)
@@ -139,6 +140,34 @@ npm start
 ```
 
 That step pushes your real Steam data into the widget and finishes the setup.
+
+### Manual profile add fallback
+
+If the helper script creates the app and widget but does not add it to your profile, you can run this fallback snippet manually.
+
+Run it in the Discord Developer Portal console after your widget app has already been created:
+
+```js
+let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
+webpackChunkdiscord_developers.pop();
+
+let UserStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.getCurrentUser).exports.A;
+let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
+
+const appId = "PASTE_YOUR_APPLICATION_ID_HERE";
+const userId = UserStore.getCurrentUser().id;
+
+console.log("[Steam Widget Creator] Manually adding the widget to your profile...");
+await api.patch({ url: `/applications/${appId}`, body: { redirect_uris: ["https://discord.com"] } });
+await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
+const profileRes = await api.get({ url: `/users/${userId}/profile` });
+const existingWidgets = profileRes.body.widgets || [];
+existingWidgets.unshift({ data: { type: "application", application_id: appId } });
+await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+console.log("[Steam Widget Creator] Widget added to your profile.");
+```
+
+Replace `PASTE_YOUR_APPLICATION_ID_HERE` with your real application ID first.
 
 ### Script used by the simple method
 

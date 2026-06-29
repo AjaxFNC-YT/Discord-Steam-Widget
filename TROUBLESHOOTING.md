@@ -135,6 +135,26 @@ What to do:
 3. run `npm start`
 4. add the widget to your profile manually in Discord if it did not appear automatically
 
+Manual fallback snippet for the Developer Portal console:
+
+```js
+let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
+webpackChunkdiscord_developers.pop();
+
+let UserStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.getCurrentUser).exports.A;
+let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
+
+const appId = "PASTE_YOUR_APPLICATION_ID_HERE";
+const userId = UserStore.getCurrentUser().id;
+
+await api.patch({ url: `/applications/${appId}`, body: { redirect_uris: ["https://discord.com"] } });
+await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
+const profileRes = await api.get({ url: `/users/${userId}/profile` });
+const existingWidgets = profileRes.body.widgets || [];
+existingWidgets.unshift({ data: { type: "application", application_id: appId } });
+await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+```
+
 The helper script now continues even if this specific auto-add step fails.
 
 Common causes:
