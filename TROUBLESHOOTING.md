@@ -10,6 +10,7 @@ This guide lists the most common problems people hit while setting up the Steam 
 - [Image fields are blank](#image-fields-are-blank)
 - [Steam values look wrong](#steam-values-look-wrong)
 - [Widget exists but does not appear on profile](#widget-exists-but-does-not-appear-on-profile)
+- [This Application Is Still Syncing](#this-application-is-still-syncing)
 - [Common error causes](#common-error-causes)
 
 ## Nothing updates at all
@@ -107,6 +108,36 @@ Make sure:
 - the updater is targeting the correct application and user IDs
 
 This is usually a Discord-side setup problem, not a Steam API problem.
+
+## This Application Is Still Syncing
+
+If the widget shows `This Application Is Still Syncing`, the setup usually is not fully finished yet.
+
+Most often, this means:
+
+- the widget exists but the updater has not pushed real Steam data yet
+- the app or widget was set up on the wrong application
+- the widget auth / profile attachment flow was not completed correctly
+
+Fix:
+
+1. make sure the widget was created and published correctly
+2. make sure the app is authed to your account
+3. fill out [`config.json`](./config.json)
+4. run the updater:
+
+```bash
+npm start
+```
+
+The updater is what finishes the widget setup by pushing your real Steam data into the widget profile identity.
+
+If it still happens after that, re-check:
+
+- `applicationId`
+- `userId`
+- `widgetBotToken`
+- that the widget was created on the same app you put in `config.json`
 
 ## Common error causes
 

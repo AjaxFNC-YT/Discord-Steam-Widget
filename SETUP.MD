@@ -147,12 +147,11 @@ If you do not have the widget side finished yet, do this now.
 ### What to do
 
 1. Open [WIDGET-SETUP.md](./WIDGET-SETUP.md)
-2. Create your Discord application
-3. Make sure widget access is set up for your method
-4. Build the widget layout
-5. Add the field names you want to use
-6. Publish the widget
-7. Auth the widget to your account
+2. Use the recommended helper script method there
+3. Let it create and publish the base widget for you
+4. Come back here and continue with `config.json`
+
+If you want to build everything manually instead, the same guide also includes the full manual path.
 
 ### Good starter field names
 

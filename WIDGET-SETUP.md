@@ -51,7 +51,7 @@ It shows you how to:
 The important idea is:
 
 - Discord controls the widget layout
-- the Steam script only fills the field names you created there
+- the Steam updater script is what actually pushes your live Steam data into the widget
 
 ---
 
@@ -61,26 +61,31 @@ There are two ways to do this.
 
 ### Method 1 - Simple script setup
 
-Use this if you want the fastest path.
+Recommended for most people.
+
+Use this if you want the fastest and easiest path.
 
 It uses the helper script below to:
 
 - create the app
+- upload the Steam app icon
 - enable Social SDK
 - create a base widget
 - publish it
-- add it to your profile
-- copy a starter PATCH command for issuing the widget identity
+- auth the widget flow
+- open the widget page for final checking
 
 ### Method 2 - Manual widget setup
 
-Use this if you want to build the widget yourself in the editor and understand every step.
+Use this only if you want to build the widget yourself in the editor and control every step manually.
 
 ---
 
 ## Method 1 - Simple script setup
 
 This is the easiest way to get a base Steam widget made.
+
+This is the recommended setup method for this project.
 
 ### How to use it
 
@@ -97,33 +102,34 @@ This is the easiest way to get a base Steam widget made.
 
 The script will:
 
-1. create a new app named `Steam Widget`
-2. enable Social SDK for it
-3. create a widget named `Steam Profile`
-4. build a simple base layout using this repo's field names
-5. publish the widget
-6. add the widget to your profile
-7. reset and show the bot token
-8. copy a PowerShell PATCH command to your clipboard
-9. open the widget page so you can tweak it
+1. create a new app named `Steam Profile`
+2. upload the Steam logo as the app icon
+3. enable Social SDK for it
+4. create a widget named `Steam Profile`
+5. build a simple base layout using this repo's field names
+6. publish the widget
+7. auth the widget flow
+8. open the widget page so you can tweak it
 
 ### After the script finishes
 
-Paste the copied PowerShell command into a terminal once.
-
-That creates the starter widget identity with sample values.
-
-Then copy these values into [`config.json`](./config.json):
+Copy these values into [`config.json`](./config.json):
 
 - `applicationId`
-- `userId`
 - `widgetBotToken`
 
 You can get:
 
 - `applicationId` from the newly created app
-- `userId` from your Discord account
-- `widgetBotToken` from the script output or the app's Bot page
+- `widgetBotToken` from the app's **Bot** page
+
+Then run the updater from this repo:
+
+```bash
+npm start
+```
+
+That step pushes your real Steam data into the widget and finishes the setup.
 
 ### Script used by the simple method
 
@@ -135,30 +141,13 @@ let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
 webpackChunkdiscord_developers.pop();
 
 let ApexStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.createOverride).exports.A;
-let UserStore = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.getCurrentUser).exports.A;
 let FluxDispatcher = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto__?.flushWaitQueue).exports.A;
 let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
-let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
 
-const userId = UserStore.getCurrentUser().id;
 const appName = "Steam Profile";
 const widgetName = "Steam Profile";
-
-const starterDynamic = [
-  { type: 3, name: "backgroundimage", value: { url: "https://cdn.discordapp.com/embed/avatars/0.png" } },
-  { type: 3, name: "avataricon", value: { url: "https://cdn.discordapp.com/embed/avatars/0.png" } },
-  { type: 1, name: "mostplayedgame", value: "Most Played Game" },
-  { type: 1, name: "playtime", value: "0h 0m" },
-  { type: 1, name: "gamesowned", value: "0" },
-  { type: 1, name: "friends", value: "0" },
-  { type: 1, name: "steamlevel", value: "0" },
-  { type: 1, name: "badgecount", value: "0" },
-  { type: 1, name: "membersince", value: "2020" },
-  { type: 1, name: "playtimepast2w", value: "0h 0m" },
-  { type: 1, name: "simpleurl", value: "steamcommunity.com/id/example" }
-];
 
 console.log("[Steam Widget Creator] Creating a new app... Please solve the captcha if prompted.");
 const appRes = await api.post({ url: "/applications", body: { name: appName, team_id: null } });
@@ -344,34 +333,16 @@ console.log("[Steam Widget Creator] Adding redirect URI and authing the widget..
 await api.patch({ url: `/applications/${appId}`, body: { name: appName, redirect_uris: ["https://discord.com"] } });
 await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
 
-console.log("[Steam Widget Creator] Adding the widget to your profile...");
-const profileRes = await api.get({ url: `/users/${userId}/profile` });
-const existingWidgets = profileRes.body.widgets || [];
-if (!existingWidgets.some(widget => widget?.data?.application_id === appId)) {
-  existingWidgets.unshift({ data: { type: "application", application_id: appId } });
-  await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
-}
+const widgetEditorUrl = `https://discord.com/developers/applications/${appId}/widget`;
 
-console.log("[Steam Widget Creator] Getting the bot token... Please enter your 2FA if prompted.");
-const botTokenRes = await api.post({ url: `/applications/${appId}/bot/reset` });
-const botToken = botTokenRes.body.token;
-
-const patchCommand = `Invoke-RestMethod -Method PATCH -Headers @{"Content-Type"="application/json"; "Authorization"="Bot ${botToken}"; "User-Agent"="DiscordBot (https://github.com/discord/discord-api-docs, 1.0.0)"} -Uri https://discord.com/api/v9/applications/${appId}/users/${userId}/identities/0/profile -Body '${JSON.stringify({ username: "Steam Profile", data: { dynamic: starterDynamic } })}'`;
-globalCopy(patchCommand);
-
-console.log("[Steam Widget Creator] Copied a starter PATCH command to your clipboard.");
-console.log("[Steam Widget Creator] Paste it into PowerShell once to create the base identity.");
+console.log("[Steam Widget Creator] Widget created and published.");
+console.log("[Steam Widget Creator] Next: copy the application ID into config.json, get the bot token from the Bot page, then run the Node updater to push your real Steam data.");
 console.log(`[Steam Widget Creator] App ID: ${appId}`);
-console.log(`[Steam Widget Creator] User ID: ${userId}`);
-console.log(`[Steam Widget Creator] Bot Token: ${botToken}`);
+console.log(`[Steam Widget Creator] Opening widget editor: ${widgetEditorUrl}`);
 
 ApexStore.createOverride("2026-03-widget-config-editor", 1);
-document.querySelector(`a[href="/developers/applications/${appId}"]`).click();
-while (!document.querySelector(`a[href="/developers/applications/${appId}/widget"]`)) {
-  await sleep(100);
-}
-document.querySelector(`a[href="/developers/applications/${appId}/widget"]`).click();
-console.log("[Steam Widget Creator] The widget page should now be open so you can tweak the layout.");
+await sleep(300);
+window.location.href = widgetEditorUrl;
 ```
 
 </details>
@@ -408,7 +379,7 @@ Use this if you want to do it yourself in the editor.
 
 1. Open the [Discord Developer Portal](https://discord.com/developers/applications)
 2. Click **New Application**
-3. Name it something like `Steam Widget`
+3. Name it something like `Steam Profile`
 4. Create the app
 5. Copy the **Application ID**
 6. Put that value into [`config.json`](./config.json) as `applicationId`
@@ -598,7 +569,7 @@ Depending on Discord's current flow, this is often done through:
 - a community snippet
 - an internal client-side widget add flow
 
-If the widget is published and authed but still does not appear on your profile, this is the next thing to check.
+After that, run the Node updater from this repo so the widget actually receives your Steam data.
 
 ---
 

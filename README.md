@@ -59,8 +59,9 @@ It is built for people who want:
 If you want the shortest path:
 
 1. Follow [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
-2. Fill out [`config.json`](./config.json)
-3. Run:
+2. Use the recommended Discord widget helper in [WIDGET-SETUP.md](./WIDGET-SETUP.md)
+3. Fill out [`config.json`](./config.json)
+4. Run:
 
 ```bash
 npm install
@@ -84,7 +85,7 @@ If you want the full walkthrough, use [SETUP.MD](./SETUP.MD).
 ### Discord-side setup
 
 - [WIDGET-SETUP.md](./WIDGET-SETUP.md)  
-  How to create the widget, publish it, auth it, and choose field names.
+  Recommended widget setup path. Includes the helper script plus the full manual fallback.
 
 ### Advanced config
 

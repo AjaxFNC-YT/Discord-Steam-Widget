@@ -85,10 +85,16 @@ If you do not already have those, read:
 
 That guide covers the Discord side:
 
+- the recommended helper script setup
 - app creation
 - widget creation
 - publishing
 - authing the widget to your account
+
+Recommended:
+
+- use the helper script in `WIDGET-SETUP.md`
+- then come back here and finish `config.json`
 
 ## Step 5 - Fill out `config.json`
 
