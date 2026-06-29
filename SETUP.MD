@@ -8,6 +8,22 @@ If you want the full project documentation, supported variables, formatting exam
 
 This file is focused on getting the widget working from zero.
 
+## Table of Contents
+
+- [What this script does](#what-this-script-does)
+- [Before you start](#before-you-start)
+- [Step 1 - Get your Steam API key](#step-1---get-your-steam-api-key)
+- [Step 2 - Get your Steam ID64](#step-2---get-your-steam-id64)
+- [Step 3 - Fill out config.json](#step-3---fill-out-configjson)
+- [Step 4 - Understand the Discord side](#step-4---understand-the-discord-side)
+- [Step 5 - Add or rename your widget keys](#step-5---add-or-rename-your-widget-keys)
+- [Step 6 - Text fields vs image fields](#step-6---text-fields-vs-image-fields)
+- [Step 7 - Run the updater](#step-7---run-the-updater)
+- [Step 8 - Choose polling or one-time mode](#step-8---choose-polling-or-one-time-mode)
+- [Common setup examples](#common-setup-examples)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+
 ## What this script does
 
 The updater reads Steam profile data and pushes it into a Discord widget profile.
@@ -31,7 +47,7 @@ You need:
   - `userId`
   - `widgetBotToken`
 
-## Step 1 — Get your Steam API key
+## Step 1 - Get your Steam API key
 
 Open:
 
@@ -45,7 +61,7 @@ Notes:
 - keep the key private
 - do not commit it to GitHub
 
-## Step 2 — Get your Steam ID64
+## Step 2 - Get your Steam ID64
 
 You need the numeric 64-bit Steam ID, not your vanity name.
 
@@ -65,7 +81,7 @@ https://steamcommunity.com/id/yourname
 
 you will need to resolve it to the numeric ID first.
 
-## Step 3 — Fill out `config.json`
+## Step 3 - Fill out `config.json`
 
 Open:
 
@@ -100,7 +116,7 @@ and fill in:
 }
 ```
 
-## Step 4 — Understand the Discord side
+## Step 4 - Understand the Discord side
 
 The script does not invent your widget layout.
 
@@ -130,7 +146,7 @@ means:
 
 The script resolves that variable and patches the key automatically.
 
-## Step 5 — Add or rename your widget keys
+## Step 5 - Add or rename your widget keys
 
 In the Discord Developer Portal, create the keys you want your widget to use.
 
@@ -165,7 +181,7 @@ you can map that too:
 }
 ```
 
-## Step 6 — Text fields vs image fields
+## Step 6 - Text fields vs image fields
 
 ### Text field
 
@@ -208,7 +224,7 @@ Example using Steam profile background:
 }
 ```
 
-## Step 7 — Run the updater
+## Step 7 - Run the updater
 
 Open a terminal in the `steam` folder and run:
 
@@ -216,7 +232,7 @@ Open a terminal in the `steam` folder and run:
 npm start
 ```
 
-## Step 8 — Choose polling or one-time mode
+## Step 8 - Choose polling or one-time mode
 
 ### Keep updating
 

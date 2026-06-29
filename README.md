@@ -1,99 +1,51 @@
 # Steam Discord Widget
 
-A configurable Node.js widget updater that pulls data from Steam and patches a Discord widget profile with it.
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Steam Web API](https://img.shields.io/badge/Steam-Web%20API-171A21?logo=steam&logoColor=white)](https://developer.valvesoftware.com/wiki/Steam_Web_API)
+[![Discord Widget](https://img.shields.io/badge/Discord-Widget-5865F2?logo=discord&logoColor=white)](https://discord.com/developers/applications)
 
-This project is built for real people, not just developers. If you want a Steam widget on your Discord profile and do not want to hardcode values by hand every time, this gives you a cleaner way to do it:
+A configurable Node.js script that updates a Discord widget profile with Steam account data.
 
-- design your widget in Discord
-- choose the widget key names you want to use
-- map those keys to Steam variables in `config.json`
-- run the updater once or keep it polling automatically
+This repo is made for people who want a Steam widget that looks good, is easy to set up, and is still customizable if they want to go deeper later.
 
----
+## What it does
+
+This project can push Steam data like:
+
+- total playtime
+- playtime in the past 2 weeks
+- games owned
+- friends count
+- Steam level
+- badge count
+- member since
+- most played game
+- profile links
+- avatar URLs
+- profile background image / video URLs
+
+You can use those as:
+
+- text fields
+- number-style fields
+- image fields
 
 ## Table of Contents
 
-- [What This Project Does](#what-this-project-does)
-- [Who This Is For](#who-this-is-for)
-- [Features](#features)
 - [Quick Start](#quick-start)
 - [Documentation](#documentation)
-- [How the Mapping System Works](#how-the-mapping-system-works)
-- [Supported Field Types](#supported-field-types)
-- [Common Use Cases](#common-use-cases)
+- [How It Works](#how-it-works)
+- [Who This Is For](#who-this-is-for)
+- [Features](#features)
 - [Project Files](#project-files)
 - [Security](#security)
 - [Useful Links](#useful-links)
 
----
-
-## What This Project Does
-
-This script reads Steam account/profile data and pushes it into a Discord widget profile.
-
-That includes things like:
-
-- total playtime
-- playtime in the past 2 weeks
-- game count
-- friend count
-- Steam level
-- badge count
-- account age / member since
-- most played game
-- profile URLs
-- avatar image links
-- Steam profile background media links
-
-You can send these values as:
-
-- text fields
-- number-friendly values
-- image URLs for image fields
-
----
-
-## Who This Is For
-
-This repo is meant for two groups:
-
-### 1. People who just want it working
-
-If you do not really code and just want a clean Steam widget:
-
-- use the simple setup guide
-- copy the provided config pattern
-- edit a few values
-- run the script
-
-### 2. People who want full control
-
-If you want to customize the layout, field names, formatting, image fields, or custom variables:
-
-- use the advanced docs
-- edit `dynamicFields`
-- map your own widget keys however you want
-
----
-
-## Features
-
-- Config-driven widget field mapping
-- Supports custom widget key names
-- Supports text fields and image fields
-- Supports simple formatting with variable strings
-- Supports one-time mode and polling mode
-- Supports Steam profile URLs and simplified URLs
-- Supports Steam avatars and profile background links
-- Backward-compatible with older configs that used `template`
-
----
-
 ## Quick Start
 
-If you want the shortest path:
+If you just want the easiest path:
 
-1. Read [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
+1. Open [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
 2. Fill out [`config.json`](./config.json)
 3. Run:
 
@@ -101,48 +53,56 @@ If you want the shortest path:
 npm start
 ```
 
-If you want to understand the Discord widget side too, read [WIDGET-SETUP.md](./WIDGET-SETUP.md).
-
-If you want the full configuration system, read [ADVANCED-SETUP.md](./ADVANCED-SETUP.md).
-
----
-
 ## Documentation
 
-This repo is split into multiple docs on purpose, so people can go straight to the level they need.
+This repo uses multiple guides on purpose, so beginners do not get slammed by a giant wall of documentation.
 
 ### Start here
 
 - [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)  
-  Best for most people. Fast, clear, minimal setup.
+  Fastest setup path for most people.
 
-### Widget-side setup
-
-- [WIDGET-SETUP.md](./WIDGET-SETUP.md)  
-  Explains how the Discord widget keys relate to the script and how to think about field names.
-
-### Advanced config
-
-- [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)  
-  Full variable reference, formatting options, image fields, number-friendly fields, and custom mappings.
-
-### Quick onboarding
+### Full setup guide
 
 - [SETUP.MD](./SETUP.MD)  
-  Step-by-step setup from zero, with examples.
+  Step-by-step setup, from Steam key to Discord widget patching.
 
----
+### Discord widget-side guide
 
-## How the Mapping System Works
+- [WIDGET-SETUP.md](./WIDGET-SETUP.md)  
+  Covers creating widget keys, publishing, authing the widget, and using image fields.
 
-The script does not force a widget design on you.
+### Advanced config guide
 
-Instead:
+- [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)  
+  Covers variables, formatting, image links, number-style values, and custom field mappings.
 
-1. You create widget keys on the Discord side
-2. You choose those same key names in `config.json`
-3. You attach each key to a Steam variable
-4. The script resolves the variable and pushes the result
+### Troubleshooting guide
+
+- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)  
+  Common errors, why they happen, and how to fix them.
+
+## How It Works
+
+The system has two sides:
+
+### 1. Discord side
+
+You create widget keys in your Discord widget profile.
+
+Examples:
+
+- `playtime`
+- `gamesowned`
+- `friends`
+- `steamlevel`
+- `membersince`
+- `avataricon`
+- `backgroundimage`
+
+### 2. Script side
+
+In [`config.json`](./config.json), you map those keys to Steam variables.
 
 Example:
 
@@ -156,9 +116,9 @@ Example:
 That means:
 
 - widget key name = `playtime`
-- Steam variable = `{{playtimeHoursMinutes}}`
+- value source = `{{playtimeHoursMinutes}}`
 
-The updater handles the rest.
+The script resolves that variable automatically and pushes it to the widget.
 
 You can also use your own custom key names:
 
@@ -169,144 +129,59 @@ You can also use your own custom key names:
 }
 ```
 
-As long as your widget supports the key name, the script can send it.
+## Who This Is For
 
----
+### If you do not code much
 
-## Supported Field Types
+Use:
 
-### Text fields
+- [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
+- [SETUP.MD](./SETUP.MD)
 
-Default type:
+### If you want more control
 
-```json
-{
-  "name": "membersince",
-  "variable": "{{memberSinceAgo}}"
-}
-```
+Use:
 
-### Image fields
+- [WIDGET-SETUP.md](./WIDGET-SETUP.md)
+- [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)
+- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
-Set `"type": 3`:
+## Features
 
-```json
-{
-  "name": "avataricon",
-  "type": 3,
-  "variable": "{{avatarFull}}"
-}
-```
-
-Example with Steam background art:
-
-```json
-{
-  "name": "backgroundimage",
-  "type": 3,
-  "variable": "{{profileBackgroundImage}}"
-}
-```
-
----
-
-## Common Use Cases
-
-### Show total Steam playtime
-
-```json
-{
-  "name": "playtime",
-  "variable": "{{playtimeHoursMinutes}}"
-}
-```
-
-### Show playtime in the past 2 weeks
-
-```json
-{
-  "name": "playtimepast2w",
-  "variable": "{{playtimePast2WHoursMinutes}}"
-}
-```
-
-### Show most played game
-
-```json
-{
-  "name": "mostplayedgame",
-  "variable": "{{mostPlayedGameDisplay}}"
-}
-```
-
-### Show the full Steam profile link
-
-```json
-{
-  "name": "profileurl",
-  "variable": "{{profileUrl}}"
-}
-```
-
-### Show the simplified Steam profile link
-
-```json
-{
-  "name": "simpleurl",
-  "variable": "{{simpleUrl}}"
-}
-```
-
-### Use a number-friendly field
-
-```json
-{
-  "name": "steamlevel",
-  "variable": "{{steamLevelNumber}}"
-}
-```
-
-### Use an image field
-
-```json
-{
-  "name": "avataricon",
-  "type": 3,
-  "variable": "{{avatarFull}}"
-}
-```
-
----
+- Config-driven field mapping
+- Supports text and image fields
+- Supports custom widget key names
+- Supports one-time mode and polling mode
+- Supports formatted variable strings
+- Supports Steam profile links and simplified links
+- Supports avatar image URLs
+- Supports profile background image / video URLs
+- Backward-compatible with older `template` configs
 
 ## Project Files
 
-- [`index.mjs`](./index.mjs) - main updater script
-- [`config.json`](./config.json) - local configuration
-- [`README.md`](./README.md) - main project page
-- [`SETUP.MD`](./SETUP.MD) - step-by-step full setup
-- [`SIMPLE-SETUP.md`](./SIMPLE-SETUP.md) - easiest setup path
-- [`WIDGET-SETUP.md`](./WIDGET-SETUP.md) - Discord-side widget mapping guide
-- [`ADVANCED-SETUP.md`](./ADVANCED-SETUP.md) - advanced config and variable reference
-
----
+- [`index.mjs`](./index.mjs) - main updater
+- [`config.json`](./config.json) - simple public-safe config template
+- [`README.md`](./README.md) - project landing page
+- [`SIMPLE-SETUP.md`](./SIMPLE-SETUP.md) - easiest path
+- [`SETUP.MD`](./SETUP.MD) - full step-by-step setup
+- [`WIDGET-SETUP.md`](./WIDGET-SETUP.md) - Discord widget-side guide
+- [`ADVANCED-SETUP.md`](./ADVANCED-SETUP.md) - advanced config + variables
+- [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - common problems and fixes
 
 ## Security
 
-Before publishing or sharing this project:
+Before publishing or sharing:
 
-1. Remove any real values from [`config.json`](./config.json)
-2. Replace them with placeholders
-3. Rotate anything that was exposed before
+1. Keep real secrets out of `config.json`
+2. Use placeholder values in the public repo
+3. Rotate anything that was previously exposed
 
-Never commit:
+Do not commit:
 
-- real bot tokens
-- real Steam API keys
-- real private configuration values
-
-This repo is now set up to use one simple public-safe config format, so keep your local secrets out of version control.
-
----
+- real `widgetBotToken`
+- real `steamApiKey`
+- real personal private config values
 
 ## Useful Links
 
@@ -315,14 +190,4 @@ This repo is now set up to use one simple public-safe config format, so keep you
 - [Steam Web API Overview](https://developer.valvesoftware.com/wiki/Steam_Web_API)
 - [Discord Developer Portal](https://discord.com/developers/applications)
 
----
-
-## Final Note
-
-If you are brand new to this, start with:
-
-- [SIMPLE-SETUP.md](./SIMPLE-SETUP.md)
-
-If you already understand the basics and want to customize everything, jump to:
-
-- [ADVANCED-SETUP.md](./ADVANCED-SETUP.md)
+If you are brand new, start with [SIMPLE-SETUP.md](./SIMPLE-SETUP.md). If you want full control, jump to [ADVANCED-SETUP.md](./ADVANCED-SETUP.md).

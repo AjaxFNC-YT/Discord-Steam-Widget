@@ -4,6 +4,14 @@ This is the easiest setup path for the Steam Discord Widget.
 
 If you do not care about deep customization yet, start here.
 
+## Table of Contents
+
+- [What you need](#what-you-need)
+- [Step 1 - Open config.json](#step-1---open-configjson)
+- [Step 2 - Run it](#step-2---run-it)
+- [Step 3 - Done](#step-3---done)
+- [If something is wrong](#if-something-is-wrong)
+
 ## What you need
 
 - [Node.js 18+](https://nodejs.org/)
@@ -14,7 +22,7 @@ If you do not care about deep customization yet, start here.
   - `userId`
   - `widgetBotToken`
 
-## Step 1 — Open `config.json`
+## Step 1 - Open `config.json`
 
 Edit:
 
@@ -34,13 +42,13 @@ Fill in:
 
 Leave the rest alone for now if you want the default setup.
 
-## Step 2 — Run it
+## Step 2 - Run it
 
 ```bash
 npm start
 ```
 
-## Step 3 — Done
+## Step 3 - Done
 
 The default config already includes useful fields like:
 

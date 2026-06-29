@@ -12,6 +12,8 @@ If you only want the easiest setup, read:
 - [Dynamic field schema](#dynamic-field-schema)
 - [Username formatting](#username-formatting)
 - [Variable reference](#variable-reference)
+- [Number-friendly variables](#number-friendly-variables)
+- [Image-link variables](#image-link-variables)
 - [Formatting examples](#formatting-examples)
 - [Image field examples](#image-field-examples)
 - [Backward compatibility](#backward-compatibility)
@@ -120,7 +122,9 @@ Examples:
 - `{{mostPlayedGameHoursMinutes}}`
 - `{{mostPlayedGameHoursDecimal}}`
 
-### Number-friendly variables
+## Number-friendly variables
+
+These are usually the best choices for number-style fields on the Discord side.
 
 - `{{gamesOwned}}`
 - `{{gamesOwnedNumber}}`
@@ -135,7 +139,9 @@ Examples:
 - `{{mostPlayedGameMinutes}}`
 - `{{mostPlayedGameAppId}}`
 
-### Image-link variables
+## Image-link variables
+
+These are meant for image fields (`"type": 3`) or anywhere you want a direct media URL.
 
 - `{{avatarSmall}}`
 - `{{avatarMedium}}`
