@@ -137,6 +137,21 @@ What to do:
 
 The helper script now continues even if this specific auto-add step fails.
 
+Common causes:
+
+1. your profile board still references a widget from an app you deleted
+2. you do not own the application you are trying to save to your profile
+3. your account is not in Discord's widget rollout / experiment
+
+If you deleted an older widget app, clear the profile board first in the normal Discord client console:
+
+```js
+let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);
+webpackChunkdiscord_app.pop();
+let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
+api.put({url: `/users/@me/widgets`, body: {widgets: []}})
+```
+
 ## This Application Is Still Syncing
 
 If the widget shows `This Application Is Still Syncing`, the setup usually is not fully finished yet.

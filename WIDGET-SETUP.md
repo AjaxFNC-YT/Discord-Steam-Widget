@@ -156,6 +156,12 @@ let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
 let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
+const clearWidgetsSnippet = [
+  "let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);",
+  "webpackChunkdiscord_app.pop();",
+  "let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;",
+  "api.put({url: `/users/@me/widgets`, body: {widgets: []}})"
+].join("\\n");
 
 const appName = "Steam Profile";
 const widgetName = "Steam Profile";
@@ -341,41 +347,26 @@ await api.patch({
 
 await api.post({ url: `/applications/${appId}/widget-configs/${configId}/publish` });
 
-console.log("[Steam Widget Creator] Adding redirect URI and authing the widget...");
-await api.patch({ url: `/applications/${appId}`, body: { name: appName, redirect_uris: ["https://discord.com"] } });
-await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
-await sleep(1500);
-
+console.log("[Steam Widget Creator] Adding the widget to your profile...");
 let widgetAddedToProfile = false;
 
 try {
-  console.log("[Steam Widget Creator] Adding the widget to your profile...");
-  let lastError = null;
-
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    try {
-      const profileRes = await api.get({ url: `/users/${userId}/profile` });
-      const existingWidgets = Array.isArray(profileRes.body.widgets) ? [...profileRes.body.widgets] : [];
-      const alreadyAdded = existingWidgets.some(widget => widget?.data?.application_id === appId);
-      if (!alreadyAdded) {
-        existingWidgets.unshift({ data: { type: "application", application_id: appId } });
-      }
-      await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
-      widgetAddedToProfile = true;
-      break;
-    } catch (error) {
-      lastError = error;
-      console.warn(`[Steam Widget Creator] Auto-add attempt ${attempt} failed. Retrying...`);
-      await sleep(1500 * attempt);
-    }
-  }
-
-  if (!widgetAddedToProfile && lastError) {
-    throw lastError;
-  }
+  await api.patch({ url: `/applications/${appId}`, body: { redirect_uris: ["https://discord.com"] } });
+  await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
+  const profileRes = await api.get({ url: `/users/${userId}/profile` });
+  const existingWidgets = profileRes.body.widgets || [];
+  existingWidgets.unshift({ data: { type: "application", application_id: appId } });
+  await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+  widgetAddedToProfile = true;
 } catch (error) {
   console.warn("[Steam Widget Creator] Discord rejected the automatic profile add step.");
   console.warn("[Steam Widget Creator] Your widget was still created. You may need to add it to your profile manually in Discord.");
+  console.warn("[Steam Widget Creator] Common causes:");
+  console.warn("[Steam Widget Creator] 1. Your profile board still references a deleted widget app.");
+  console.warn("[Steam Widget Creator] 2. You are not the owner of the widget application.");
+  console.warn("[Steam Widget Creator] 3. Your account is not in Discord's widgets experiment.");
+  console.warn("[Steam Widget Creator] If you deleted an older widget app, run this cleanup snippet in the normal Discord client console, not the Developer Portal:");
+  console.warn(clearWidgetsSnippet);
   console.warn(error);
 }
 
