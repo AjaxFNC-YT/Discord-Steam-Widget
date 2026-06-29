@@ -187,3 +187,4 @@ Fix:
 
 - use text fields normally
 - use `"type": 3` for image fields only
+<!-- minor refresh -->

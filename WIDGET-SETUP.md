@@ -624,3 +624,4 @@ Once the widget exists and is attached to your profile:
 - go to [SIMPLE-SETUP.md](./SIMPLE-SETUP.md) for the easier setup path
 - go to [ADVANCED-SETUP.md](./ADVANCED-SETUP.md) if you want custom variables and formatting
 - go to [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) if something is not showing up
+<!-- minor refresh -->

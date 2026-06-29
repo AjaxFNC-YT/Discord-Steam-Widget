@@ -150,3 +150,4 @@ Use these guides:
 - [WIDGET-SETUP.md](./WIDGET-SETUP.md) for the Discord widget side
 - [ADVANCED-SETUP.md](./ADVANCED-SETUP.md) for custom fields, variables, and formatting
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for common problems and fixes
+<!-- minor refresh -->

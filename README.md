@@ -217,3 +217,4 @@ Never commit:
 - [Steam Web API Key](https://steamcommunity.com/dev/apikey)
 - [Steam ID Lookup](https://steamid.io/)
 - [Discord Developer Portal](https://discord.com/developers/applications)
+<!-- minor refresh -->

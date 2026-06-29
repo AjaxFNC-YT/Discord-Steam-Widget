@@ -282,3 +282,4 @@ New configs should use:
 ```json
 "variable": "{{playtimeHoursMinutes}}"
 ```
+<!-- minor refresh -->

@@ -394,3 +394,4 @@ Do not commit:
 - real `widgetBotToken`
 - real `steamApiKey`
 - private personal values
+<!-- minor refresh -->
