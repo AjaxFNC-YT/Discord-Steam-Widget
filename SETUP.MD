@@ -364,7 +364,8 @@ Good public repos should never contain live:
 
 For a public GitHub repo, it is a good idea to keep:
 
-- `README.md` for full docs
-- `SETUP.MD` for quick onboarding
-- `config.example.json` as a safe sample
-- a blank local `config.json` for private use only
+- `README.md` for the main project page
+- `SIMPLE-SETUP.md` for the fastest path
+- `WIDGET-SETUP.md` for Discord-side widget mapping
+- `ADVANCED-SETUP.md` for full config and variable docs
+- `SETUP.MD` for the step-by-step walkthrough
