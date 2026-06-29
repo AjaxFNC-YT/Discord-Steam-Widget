@@ -10,6 +10,7 @@ This guide covers the most common problems people hit while setting up the Steam
 - [Image fields are blank](#image-fields-are-blank)
 - [Steam values look wrong](#steam-values-look-wrong)
 - [Widget exists but does not appear on profile](#widget-exists-but-does-not-appear-on-profile)
+- [Automatic profile add says 401 Unauthorized](#automatic-profile-add-says-401-unauthorized)
 - [This Application Is Still Syncing](#this-application-is-still-syncing)
 - [Common error causes](#common-error-causes)
 
@@ -108,6 +109,33 @@ Make sure:
 - the updater is targeting the correct application and user IDs
 
 This is usually a Discord-side setup problem, not a Steam API problem.
+
+## Automatic profile add says 401 Unauthorized
+
+If the helper script fails on:
+
+```text
+PUT /users/@me/widgets
+401 Unauthorized
+```
+
+that does not usually mean the whole widget setup failed.
+
+It usually means:
+
+- the app was created successfully
+- the widget was created successfully
+- the publish/auth steps worked
+- Discord rejected the automatic profile widget write for your current session
+
+What to do:
+
+1. keep the generated app and widget
+2. use the copied `config.json` starter
+3. run `npm start`
+4. add the widget to your profile manually in Discord if it did not appear automatically
+
+The helper script now continues even if this specific auto-add step fails.
 
 ## This Application Is Still Syncing
 

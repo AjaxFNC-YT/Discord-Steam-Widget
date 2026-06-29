@@ -112,7 +112,7 @@ The script will:
 5. build a simple base layout using this repo's field names
 6. publish the widget
 7. auth the widget flow
-8. add the widget to your profile
+8. try to add the widget to your profile
 9. reset the widget bot token
 10. copy a ready `config.json` starter to your clipboard
 11. open the widget page so you can tweak it
@@ -344,12 +344,40 @@ await api.post({ url: `/applications/${appId}/widget-configs/${configId}/publish
 console.log("[Steam Widget Creator] Adding redirect URI and authing the widget...");
 await api.patch({ url: `/applications/${appId}`, body: { name: appName, redirect_uris: ["https://discord.com"] } });
 await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
+await sleep(1500);
 
-console.log("[Steam Widget Creator] Adding the widget to your profile...");
-const profileRes = await api.get({ url: `/users/${userId}/profile` });
-const existingWidgets = Array.isArray(profileRes.body.widgets) ? profileRes.body.widgets : [];
-existingWidgets.unshift({ data: { type: "application", application_id: appId } });
-await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+let widgetAddedToProfile = false;
+
+try {
+  console.log("[Steam Widget Creator] Adding the widget to your profile...");
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    try {
+      const profileRes = await api.get({ url: `/users/${userId}/profile` });
+      const existingWidgets = Array.isArray(profileRes.body.widgets) ? [...profileRes.body.widgets] : [];
+      const alreadyAdded = existingWidgets.some(widget => widget?.data?.application_id === appId);
+      if (!alreadyAdded) {
+        existingWidgets.unshift({ data: { type: "application", application_id: appId } });
+      }
+      await api.put({ url: `/users/@me/widgets`, body: { widgets: existingWidgets } });
+      widgetAddedToProfile = true;
+      break;
+    } catch (error) {
+      lastError = error;
+      console.warn(`[Steam Widget Creator] Auto-add attempt ${attempt} failed. Retrying...`);
+      await sleep(1500 * attempt);
+    }
+  }
+
+  if (!widgetAddedToProfile && lastError) {
+    throw lastError;
+  }
+} catch (error) {
+  console.warn("[Steam Widget Creator] Discord rejected the automatic profile add step.");
+  console.warn("[Steam Widget Creator] Your widget was still created. You may need to add it to your profile manually in Discord.");
+  console.warn(error);
+}
 
 console.log("[Steam Widget Creator] Getting the bot token... Please solve 2FA if Discord asks.");
 const botTokenRes = await api.post({ url: `/applications/${appId}/bot/reset` });
@@ -386,6 +414,9 @@ const widgetEditorUrl = `https://discord.com/developers/applications/${appId}/wi
 console.log("[Steam Widget Creator] Widget created and published.");
 console.log("[Steam Widget Creator] A starter config.json was copied to your clipboard.");
 console.log("[Steam Widget Creator] Replace YOUR_STEAM_API_KEY and YOUR_STEAM_ID64, then run npm start.");
+if (!widgetAddedToProfile) {
+  console.log("[Steam Widget Creator] If the widget is not on your profile yet, add it manually after the page opens.");
+}
 console.log(`[Steam Widget Creator] App ID: ${appId}`);
 console.log(`[Steam Widget Creator] User ID: ${userId}`);
 console.log(`[Steam Widget Creator] Opening widget editor: ${widgetEditorUrl}`);
@@ -618,6 +649,8 @@ Depending on Discord's current flow, this is often done through:
 - the Discord client
 - a community snippet
 - an internal client-side widget add flow
+
+If the helper script logs a `401 Unauthorized` when trying to add the widget automatically, that usually means Discord accepted the app and widget actions but rejected the profile widget write for your current session. In that case, just add the widget manually and continue.
 
 After that, run the Node updater from this repo so the widget actually receives your Steam data.
 
