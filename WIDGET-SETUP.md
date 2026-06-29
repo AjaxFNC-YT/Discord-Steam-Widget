@@ -1,6 +1,16 @@
 # Widget Setup
 
-This guide explains the Discord side of the project.
+<p align="center">
+  This guide covers the Discord side of the project: creating the widget, publishing it, and authing it to your account.
+</p>
+
+<p align="center">
+  <a href="./README.md">Home</a> |
+  <a href="./SIMPLE-SETUP.md">Simple Setup</a> |
+  <a href="./SETUP.MD">Full Setup</a> |
+  <a href="./ADVANCED-SETUP.md">Advanced Setup</a> |
+  <a href="./TROUBLESHOOTING.md">Troubleshooting</a>
+</p>
 
 ## Table of Contents
 
@@ -16,11 +26,10 @@ This guide explains the Discord side of the project.
 - [Image ideas](#image-ideas)
 - [Next step](#next-step)
 
-The important idea:
+The important idea is simple:
 
-The widget design lives on Discord.
-
-The Steam script only sends values into the keys you decide to use.
+- the widget design lives on Discord
+- this script only sends values into the field names you made there
 
 ## What this guide covers
 
@@ -43,7 +52,7 @@ You will also need your `userId` and the widget bot token for the script.
 
 ## Enable widget access
 
-If your app needs the widget flow unlocked, do that before expecting anything to render correctly in the profile widget flow.
+If your app needs the widget flow unlocked, do that before expecting the widget to display correctly.
 
 If you are following a current widget method from the Discord widget community/dev server, make sure:
 
@@ -74,7 +83,7 @@ Depending on the method you are using, this usually means:
 - making sure the widget/profile identity exists
 - making sure the widget is actually attached to your profile
 
-If the updater is running but nothing appears, this is one of the first things to re-check.
+If the updater runs but nothing shows up on your profile, this is one of the first things to re-check.
 
 ## How the widget system works
 
@@ -171,6 +180,8 @@ Optional image fields:
 - `avataricon`
 - `backgroundimage`
 
+These are enough for most people to get a nice first version working fast.
+
 ## Image ideas
 
 If you are making image fields in the widget, the script can provide things like:
@@ -197,5 +208,6 @@ Example image field:
 
 Once your widget keys exist, go back to:
 
-- [SIMPLE-SETUP.md](./SIMPLE-SETUP.md) if you want the easy path
+- [SETUP.MD](./SETUP.MD) if you want the full end-to-end guide
+- [SIMPLE-SETUP.md](./SIMPLE-SETUP.md) if you want the easier path
 - [ADVANCED-SETUP.md](./ADVANCED-SETUP.md) if you want full control
