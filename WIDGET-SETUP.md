@@ -63,7 +63,7 @@ There are two ways to do this.
 
 Use this if you want the fastest path.
 
-It uses the helper script in [t.txt](/abs/path/C:/Users/ajaxfnc/Downloads/valorantShit/t.txt) to:
+It uses the helper script below to:
 
 - create the app
 - enable Social SDK
@@ -87,10 +87,11 @@ This is the easiest way to get a base Steam widget made.
 1. Open the Discord Developer Portal while logged into your account
 2. Open DevTools on that page
 3. Open the **Console**
-4. Copy the script from [t.txt](/abs/path/C:/Users/ajaxfnc/Downloads/valorantShit/t.txt)
-5. Paste it into the console
-6. Run it
-7. Solve any captcha or 2FA prompt if Discord asks
+4. Expand the script dropdown below
+5. Copy the full script
+6. Paste it into the console
+7. Run it
+8. Solve any captcha or 2FA prompt if Discord asks
 
 ### What happens next
 
@@ -125,6 +126,9 @@ You can get:
 - `widgetBotToken` from the script output or the app's Bot page
 
 ### Script used by the simple method
+
+<details>
+  <summary>Click to expand the Steam widget setup script</summary>
 
 ```js
 let wpRequire = webpackChunkdiscord_developers.push([[Symbol()], {}, r => r]);
@@ -329,6 +333,8 @@ while (!document.querySelector(`a[href="/developers/applications/${appId}/widget
 document.querySelector(`a[href="/developers/applications/${appId}/widget"]`).click();
 console.log("[Steam Widget Creator] The widget page should now be open so you can tweak the layout.");
 ```
+
+</details>
 
 ---
 
