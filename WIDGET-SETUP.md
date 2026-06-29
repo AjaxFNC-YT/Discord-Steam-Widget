@@ -140,9 +140,10 @@ let FluxDispatcher = Object.values(wpRequire.c).find(x => x?.exports?.A?.__proto
 let api = Object.values(wpRequire.c).find(x => x?.exports?.Bo?.get).exports.Bo;
 let globalCopy = navigator.userAgent.includes("Firefox") ? navigator.clipboard.writeText.bind(navigator.clipboard) : copy;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const appIconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/3840px-Steam_icon_logo.svg.png";
 
 const userId = UserStore.getCurrentUser().id;
-const appName = "Steam Widget";
+const appName = "Steam Profile";
 const widgetName = "Steam Profile";
 
 const starterDynamic = [
@@ -164,13 +165,21 @@ const appRes = await api.post({ url: "/applications", body: { name: appName, tea
 FluxDispatcher.dispatch({ type: "APPLICATION_CREATE_SUCCESS", application: appRes.body });
 const appId = appRes.body.id;
 
+console.log("[Steam Widget Creator] Uploading the app icon...");
+const iconResponse = await fetch(appIconUrl);
+const iconBlob = await iconResponse.blob();
+const iconBuffer = await iconBlob.arrayBuffer();
+const iconBase64 = btoa(String.fromCharCode(...new Uint8Array(iconBuffer)));
+const iconDataUri = `data:${iconBlob.type || "image/png"};base64,${iconBase64}`;
+await api.patch({ url: `/applications/${appId}`, body: { name: appName, icon: iconDataUri } });
+
 console.log("[Steam Widget Creator] Enabling Social SDK...");
 await api.post({
   url: `/applications/${appId}/social-sdk/enable`,
   body: {
-    name: "Steam Widget",
+    name: "Steam Profile",
     business_email: "example@example.com",
-    game_or_studio_name: "Steam Widget",
+    game_or_studio_name: "Steam Profile",
     game_or_studio_url: "",
     email_updates_consent: false,
     country_or_region: "United States",
@@ -332,7 +341,7 @@ await api.patch({
 await api.post({ url: `/applications/${appId}/widget-configs/${configId}/publish` });
 
 console.log("[Steam Widget Creator] Adding redirect URI and authing the widget...");
-await api.patch({ url: `/applications/${appId}`, body: { redirect_uris: ["https://discord.com"] } });
+await api.patch({ url: `/applications/${appId}`, body: { name: appName, redirect_uris: ["https://discord.com"] } });
 await api.post({ url: `/oauth2/authorize?client_id=${appId}&response_type=token&scope=sdk.social_layer_presence`, body: { authorize: true } });
 
 console.log("[Steam Widget Creator] Adding the widget to your profile...");
