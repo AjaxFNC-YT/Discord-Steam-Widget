@@ -1,0 +1,54 @@
+{
+  "applicationId": "YOUR_APPLICATION_ID",
+  "userId": "YOUR_USER_ID",
+  "widgetBotToken": "YOUR_WIDGET_BOT_TOKEN",
+  "steamApiKey": "YOUR_STEAM_API_KEY",
+  "steamId64": "YOUR_STEAM_ID64",
+  "pollingEnabled": true,
+  "pollIntervalMs": 300000,
+  "usernameTemplate": "{{displayName}}",
+  "dynamicFields": [
+    {
+      "name": "playtime",
+      "variable": "{{playtimeHoursMinutes}}"
+    },
+    {
+      "name": "gamesowned",
+      "variable": "{{gamesOwned}}"
+    },
+    {
+      "name": "friends",
+      "variable": "{{friends}}"
+    },
+    {
+      "name": "steamlevel",
+      "variable": "{{steamLevel}}"
+    },
+    {
+      "name": "membersince",
+      "variable": "{{memberSinceYear}}"
+    },
+    {
+      "name": "badgecount",
+      "variable": "{{badgeCount}}"
+    },
+    {
+      "name": "playtimepast2w",
+      "variable": "{{playtimePast2WHoursMinutes}}"
+    },
+    {
+      "name": "mostplayedgame",
+      "variable": "{{mostPlayedGameDisplay}}"
+    },
+    {
+      "name": "simpleurl",
+      "variable": "{{simpleUrl}}"
+    },
+    {
+      "name": "avataricon",
+      "type": 3,
+      "variable": "{{avatarFull}}",
+      "enabled": false
+    }
+  ]
+}
