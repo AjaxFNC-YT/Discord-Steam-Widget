@@ -66,14 +66,7 @@ Fill in your real values:
       "name": "playtime",
       "variable": "{{playtimeHoursMinutes}}"
     },
-    {
-      "name": "gamesowned",
-      "variable": "{{gamesOwned}}"
-    },
-    {
-      "name": "friends",
-      "variable": "{{friends}}"
-    }
+    ...
   ]
 }
 ```
